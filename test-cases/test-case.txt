@@ -1,0 +1,31 @@
+Test Cases for Stroke (Positive Cases):
+Stroke Case 1:
+
+Positive Case 1 (Stroke):
+Age: 63 years
+Sex: Male (0)
+Hypertension: Yes (1)
+Heart Disease: Yes (1)
+Ever Married: Yes (1)
+Work Type: Private (4)
+Residence Type: Urban (1)
+Average Glucose Level: 228.69
+BMI: 36.6
+Smoking Status: Smokes (1)
+
+No Stroke Case 1:
+
+Age: 55
+Sex: Male (1)
+Hypertension: No (0)
+Heart Disease: No (0)
+Ever Married: Yes (1)
+Work Type: Govt Job (2)
+Residence Type: Urban (1)
+Average Glucose Level: 110
+BMI: 25.0
+Smoking Status: Never Smoked (0)
+
+Explanation:
+Stroke Cases: These test cases simulate individuals who are more likely to have a stroke based on common risk factors such as age, hypertension, heart disease, high glucose level, and smoking status.
+No Stroke Cases: These test cases represent individuals with lower risk factors for stroke, such as younger age, no history of hypertension or heart disease, lower glucose levels, and a healthy BMI.
