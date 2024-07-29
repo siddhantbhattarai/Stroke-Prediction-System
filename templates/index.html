@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stroke Prediction</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: none;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-size: 24px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            display: none;
+        }
+        .result.high {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .result.low {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+    <script>
+        function showResult(prediction, probability) {
+            var resultDiv = document.getElementById('result');
+            var riskLevel = prediction === 'likely' ? 'High' : 'Low';
+            var riskClass = prediction === 'likely' ? 'high' : 'low';
+            resultDiv.className = 'result mt-4 ' + riskClass;
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <h4>Prediction Result</h4>
+                <p><strong>Risk Level:</strong> ${riskLevel}</p>
+                <p><strong>Probability:</strong> ${probability}%</p>
+                <p>Based on the prediction, there is a ${riskLevel.toLowerCase()} risk of stroke (probability: ${probability}%). It is important to consult with a healthcare provider for further evaluation and management. Adopting a healthy lifestyle, such as a balanced diet and regular exercise, can help mitigate the risk.</p>
+            `;
+        }
+
+        function submitForm() {
+            const form = document.querySelector('form');
+            const formData = new FormData(form);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => showResult(data.prediction, data.probability))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-center">
+                <b>Stroke Prediction System</b>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/predict" onsubmit="event.preventDefault(); submitForm();">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="age">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="sex">Sex</label>
+                            <select class="form-control" id="sex" name="sex" required>
+                                <option value="">Select Sex...</option>
+                                <option value="0">Female</option>
+                                <option value="1">Male</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="hypertension">Hypertension</label>
+                            <select class="form-control" id="hypertension" name="hypertension" required>
+                                <option value="">Select Hypertension...</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="heart_disease">Heart Disease</label>
+                            <select class="form-control" id="heart_disease" name="heart_disease" required>
+                                <option value="">Select Heart Disease...</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="ever_married">Ever Married</label>
+                            <select class="form-control" id="ever_married" name="ever_married" required>
+                                <option value="">Select Marital Status...</option>
+                                <option value="0">Not Married</option>
+                                <option value="1">Married</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="work_type">Work Type</label>
+                            <select class="form-control" id="work_type" name="work_type" required>
+                                <option value="">Select Work Type...</option>
+                                <option value="0">Never Worked</option>
+                                <option value="1">Children</option>
+                                <option value="2">Govt Job</option>
+                                <option value="3">Self-employed</option>
+                                <option value="4">Private</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Residence_type">Residence Type</label>
+                            <select class="form-control" id="Residence_type" name="Residence_type" required>
+                                <option value="">Select Residence Type...</option>
+                                <option value="0">Rural</option>
+                                <option value="1">Urban</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="avg_glucose_level">Average Glucose Level</label>
+                            <input type="number" step="0.01" class="form-control" id="avg_glucose_level" name="avg_glucose_level" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="bmi">BMI</label>
+                            <input type="number" step="0.1" class="form-control" id="bmi" name="bmi" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="smoking_status">Smoking Status</label>
+                            <select class="form-control" id="smoking_status" name="smoking_status" required>
+                                <option value="">Select Smoking Status...</option>
+                                <option value="0">Never Smoked</option>
+                                <option value="1">Smokes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block"><b>Predict</b></button>
+                </form>
+                <div id="result" class="result mt-4"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
