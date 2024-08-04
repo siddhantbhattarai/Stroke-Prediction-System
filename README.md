@@ -14,8 +14,8 @@ The Stroke Prediction System is a machine learning project designed to predict t
 
 ## Dataset
 The dataset used for training the model contains 40,910 entries and 11 columns. The features include:
-- `sex`
 - `age`
+- `sex`
 - `hypertension`
 - `heart_disease`
 - `ever_married`
